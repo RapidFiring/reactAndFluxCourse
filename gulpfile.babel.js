@@ -6,13 +6,19 @@
 import gulp from 'gulp';
 import connect from 'gulp-connect'; //Runs a local dev server
 import open from 'gulp-open'; //Open a URL in a web browser
+import browserify from 'browserify'; // Bundles JS
+import reactify from 'reactify'; // Transforms React JSX to JS
+import source from 'vinyl-source-stream'; // Use conventional text stream with Gulp
+
 
 let config = {
     port: 9005,
     devBaseUrl: 'http://localhost',
     paths: {
         html: './src/*.html',
-        dist: './dist'
+        js: './src/**/*.js',
+        dist: './dist',
+        mainJs: './src/main.js'
     }
 };
 
@@ -30,7 +36,7 @@ gulp.task('connect', function() {
 // Open but run connect first
 gulp.task('open', ['connect'], function() {
     gulp.src('dist/index.html')
-        .pipe(open({ uri: '${config.devBaseUrl}:${config.port}/'}));
+        .pipe(open({ uri: `${config.devBaseUrl}:${config.port}/`}));
 });
 
 // find all .html-Files, put it into dist-Directory and after that
@@ -40,12 +46,24 @@ gulp.task('html', function() {
         .pipe(gulp.dest(config.paths.dist))
         .pipe(connect.reload());
 });
+// task to bundle js-File
+gulp.task('js', function() {
+    browserify(config.paths.mainJs)
+        .transform(reactify)
+        .bundle()
+        .on('error', console.error.bind(console))
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest(config.paths.dist + '/scripts'))
+        .pipe(connect.reload())
+});
+
 
 // Task monitors the HTML-Directory and everytime a change is recognized,
 // the 'html'-Task starts over again
 gulp.task('watch', function() {
-    gulp.watch(config.paths.html, ['html'])
+    gulp.watch(config.paths.html, ['html']);
+    gulp.watch(config.paths.html, ['js']);
 });
 
 //default task, that can be startet by typing 'gulp' into the command line
-gulp.task('default', ['html', 'open', 'watch']);
+gulp.task('default', ['html', 'js', 'open', 'watch']);

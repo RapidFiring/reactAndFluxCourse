@@ -20,15 +20,15 @@
   - `dist` distributed package
 
 ## Gulp Configuration ##
-1. create a file for gulp called 'gulpfile.js'
-- create variables for all 3 packages installed
+1. create a file for gulp called `gulpfile.js`
+2. create variables for all 3 packages installed
     ```Javascript
     var gulp = require('gulp');
     var connect = require('gulp-connect'); //Runs a local dev server
     var open = require('gulp-open'); //Open a URL in a web browser
     ```
 
-- define a variable with configuration information
+3. define a variable with configuration information
     ```Javascript
     var config = {
         port: 9005,
@@ -80,12 +80,47 @@
 
 - create a default task, that can be started by typing `gulp` into the command line
     ```Javascript
-        gulp.task('default', ['html', 'open', 'watch']);
+    gulp.task('default', ['html', 'open', 'watch']);
     ```
     - notice the task starts the `'html'`-Task and then the `'open'`-Task
      
 ## Browserify Configuration ##
-
+1. install browserify, reactify and a file-stream package
+    `$ npm install --save browserify@11.0.1 reactify@1.1.1 vinyl-source-stream@1.1.0`
+2. add some requirements to the `gulpfile.js`
+    ```Javascript
+    var browserify = require('browserify'); // Bundles JS
+    var reactify = require('reactify'); // Transforms React JSX to JS
+    var source = require('vinyl-source-stream'); // Use conventional text stream with Gulp
+    ``` 
+3. add a js Path to the `config`
+    ```Javascript
+        ...
+            html: './src/*.html',
+            js: './src/**/*.js',
+            dist: './dist'
+            mainJs: './src/main.js'
+        ...    
+    ```
+4. create a `'js'` Task
+    ```Javascript
+    gulp.task('js', function() {
+        browserify(config.paths.mainJs)
+            .transform(reactify)
+            .bundle()
+            .on('error', console.error.bin(console))
+            .pipe(source('bundle.js'))
+            .pipe(gulp.dest(config.paths.dist + '/scripts'))
+            .pipe(connect.reload())
+    });
+    ```
+    this converts and bundles the react JSX and JS files into a File named `bundle.js` transfers it into the `dist/scripts` Directory and reloads the server 
+5. add the `'js'` task to the `'watch'` Task
+    `gulp.watch(config.paths.html, ['js']);`
+6. add the `'js'` task to the arry of the `'default'` task
+    `... ['html', 'js', 'open', 'watch'] ...`
+7. add a `main.js` File into the `src` directory with some dummy-code
+    
 ## Bootstrap Install ##
 
 ## ESLint Configuration ##
