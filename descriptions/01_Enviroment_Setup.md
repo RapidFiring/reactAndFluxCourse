@@ -86,14 +86,16 @@
      
 ## Browserify Configuration ##
 1. install browserify, reactify and a file-stream package
-    `$ npm install --save browserify@11.0.1 reactify@1.1.1 vinyl-source-stream@1.1.0`
-2. add some requirements to the `gulpfile.js`
+    ```
+    $ npm install --save browserify@11.0.1 reactify@1.1.1 vinyl-source-stream@1.1.0
+    ```
+2. add some requirements to the `gulpfile.js`.
     ```Javascript
     var browserify = require('browserify'); // Bundles JS
     var reactify = require('reactify'); // Transforms React JSX to JS
     var source = require('vinyl-source-stream'); // Use conventional text stream with Gulp
     ``` 
-3. add a js Path to the `config`
+3. add a js Path to the `config`.
     ```Javascript
         ...
             html: './src/*.html',
@@ -116,7 +118,9 @@
     ```
     this converts and bundles the react JSX and JS files into a File named `bundle.js` transfers it into the `dist/scripts` Directory and reloads the server 
 5. add the `'js'` task to the `'watch'` Task
-    `gulp.watch(config.paths.html, ['js']);`
+    ```Javascript
+    gulp.watch(config.paths.html, ['js']);
+    ```
 6. add the `'js'` task to the arry of the `'default'` task
     `... ['html', 'js', 'open', 'watch'] ...`
 7. add a `main.js` File into the `src` directory with some dummy-code
