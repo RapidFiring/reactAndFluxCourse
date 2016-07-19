@@ -60,16 +60,24 @@ gulp.task('js', function() {
         .on('error', console.error.bind(console))
         .pipe(source('bundle.js'))
         .pipe(gulp.dest(`${config.paths.dist}/scripts`))
-        .pipe(connect.reload())
+        .pipe(connect.reload());
 });
-
 //Task to bundle the css-Files
 gulp.task('css', function() {
     gulp.src(config.paths.css)
         .pipe(concat('bundle.css'))
-        .pipe(gulp.dest(`${config.paths.dist}/css`))
+        .pipe(gulp.dest(`${config.paths.dist}/css`));
 });
+//Task to bundle the image-Files
+gulp.task('images', function() {
+    gulp.src(config.paths.images)
+        .pipe(gulp.dest(`${config.paths.dist}/images`))
+        .pipe(connect.reload());
 
+    //publish favicon
+    gulp.src('./src/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist))
+});
 // Task for lint that returns the linted JS-Files,
 // according to the rules of the configuration-file
 gulp.task('lint', function() {
@@ -77,13 +85,11 @@ gulp.task('lint', function() {
         .pipe(eslint({config: 'eslint.config.json'}))
         .pipe(eslint.format());
 });
-
 // Task monitors the HTML-Directory and everytime a change is recognized,
 // the 'html'-Task starts over again
 gulp.task('watch', function() {
     gulp.watch(config.paths.html, ['html']);
     gulp.watch(config.paths.html, ['js', 'lint']);
 });
-
-//default task, that can be startet by typing 'gulp' into the command line
-gulp.task('default', ['html', 'js', 'css', 'lint', 'open', 'watch']);
+//default task, that can be started by typing 'gulp' into the command line
+gulp.task('default', ['html', 'js', 'css', 'images', 'lint', 'open', 'watch']);
