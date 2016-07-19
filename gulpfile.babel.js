@@ -9,6 +9,7 @@ import open from 'gulp-open'; //Open a URL in a web browser
 import browserify from 'browserify'; // Bundles JS
 import reactify from 'reactify'; // Transforms React JSX to JS
 import source from 'vinyl-source-stream'; // Use conventional text stream with Gulp
+import concat from 'gulp-concat';
 
 
 let config = {
@@ -17,6 +18,10 @@ let config = {
     paths: {
         html: './src/*.html',
         js: './src/**/*.js',
+        css: [
+            'node_modules/bootstrap/dist/css/bootstrap.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
+        ],
         dist: './dist',
         mainJs: './src/main.js'
     }
@@ -53,10 +58,15 @@ gulp.task('js', function() {
         .bundle()
         .on('error', console.error.bind(console))
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest(config.paths.dist + '/scripts'))
+        .pipe(gulp.dest(`${config.paths.dist}/scripts`))
         .pipe(connect.reload())
 });
 
+gulp.task('css', function() {
+    gulp.src(config.paths.css)
+        .pipe(concat('bundle.css'))
+        .pipe(gulp.dest(`${config.paths.dist}/css`))
+});
 
 // Task monitors the HTML-Directory and everytime a change is recognized,
 // the 'html'-Task starts over again
@@ -66,4 +76,4 @@ gulp.task('watch', function() {
 });
 
 //default task, that can be startet by typing 'gulp' into the command line
-gulp.task('default', ['html', 'js', 'open', 'watch']);
+gulp.task('default', ['html', 'js', 'css', 'open', 'watch']);
