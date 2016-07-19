@@ -9,8 +9,8 @@ import open from 'gulp-open'; //Open a URL in a web browser
 import browserify from 'browserify'; // Bundles JS
 import reactify from 'reactify'; // Transforms React JSX to JS
 import source from 'vinyl-source-stream'; // Use conventional text stream with Gulp
-import concat from 'gulp-concat';
-
+import concat from 'gulp-concat'; // Concatenates files
+import eslint from 'gulp-eslint'; // Lint JS Files, including JSX
 
 let config = {
     port: 9005,
@@ -62,18 +62,27 @@ gulp.task('js', function() {
         .pipe(connect.reload())
 });
 
+//Task to bundle the css-Files
 gulp.task('css', function() {
     gulp.src(config.paths.css)
         .pipe(concat('bundle.css'))
         .pipe(gulp.dest(`${config.paths.dist}/css`))
 });
 
+// Task for lint that returns the linted JS-Files,
+// according to the rules of the configuration-file
+gulp.task('lint', function() {
+    return gulp.src(config.paths.js)
+        .pipe(eslint({config: 'eslint.config.json'}))
+        .pipe(eslint.format());
+});
+
 // Task monitors the HTML-Directory and everytime a change is recognized,
 // the 'html'-Task starts over again
 gulp.task('watch', function() {
     gulp.watch(config.paths.html, ['html']);
-    gulp.watch(config.paths.html, ['js']);
+    gulp.watch(config.paths.html, ['js', 'lint']);
 });
 
 //default task, that can be startet by typing 'gulp' into the command line
-gulp.task('default', ['html', 'js', 'css', 'open', 'watch']);
+gulp.task('default', ['html', 'js', 'css', 'lint', 'open', 'watch']);

@@ -179,5 +179,36 @@
     this is defined globally for browserify.
     
 ## ESLint Configuration ##
+1. install gulp-eslint package
 
+    ```
+    $ npm install --save  gulp-eslint@0.15.0
+    ```
+    
+2. add referenz to `gulpfile.js` and bootstrap to config
+    ```Javascript
+    var eslint = require('gulp-eslint'); // Lint JS Files, including JSX    
+    ``` 
+3. Task for `'lint'` that returns the linted JS-Files, according to the rules of the configuration-file 
+    ```Javascript
+    gulp.task('lint', function() {
+        return gulp.src(config.paths.js)
+            .pipe(eslint({config: 'eslint.config.json'}))
+            .pipe(eslint.format());
+    });
+    ```
+
+4. create the `'eslint.config.json'` File in the main directory and copy the rules from this source
+    `https://github.com/coryhouse/react-flux-starter-kit/blob/master/eslint.config.json`
+    
+5. add the task to the `'default'` Task and to the watcher behind the `'js'` Task  
+    ```Javascript
+    gulp.watch(config.paths.html, ['js', 'lint']);
+    });
+    
+    gulp.task('default', ['html', 'js', 'css', 'open', 'watch']);
+    ```
+    
 ## React, React-Router and Flux Install ##
+1. install the necessary packages for this
+    `$ npm install --save react@0.13.3 react-router@0.13.3 flux@2.0.3`
