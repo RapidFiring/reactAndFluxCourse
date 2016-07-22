@@ -8,6 +8,6 @@ var routes = require('./routes');
 
 // For clean routes (without #) use Router.HistoryLocation
 // Check API documentation for further information
-Router.run(routes, function() {
+Router.run(routes, function(Handler) {
     React.render(<Handler/>, document.getElementById('app'));
 });

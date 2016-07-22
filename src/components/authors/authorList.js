@@ -7,10 +7,9 @@ var React = require('react');
 var AuthorList = React.createClass({
     propTypes: {
         // declare expectations in the development environment
-        authors: React.propTypes.array.isRequired
+        authors: React.PropTypes.array.isRequired
     },
     render: function() {
-        // for each author draw this snippet
         var createAuthorRow = function(author) {
             return (
                 <tr key={author.id}>
@@ -20,16 +19,15 @@ var AuthorList = React.createClass({
             );
         };
 
-        return(
+        return (
             <div>
                 <table className="table">
                     <thead>
-                    <th>ID</th>
-                    <th>Name</th>
+                        <th>ID</th>
+                        <th>Name</th>
                     </thead>
                     <tbody>
-                    // iterate through data in state
-                    {this.state.authors.map(createAuthorRow, this)}
+                        {this.state.authors.map(createAuthorRow, this)}
                     </tbody>
                 </table>
             </div>

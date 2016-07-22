@@ -18,9 +18,9 @@ var routes = (
         <Route name="addAuthor" path="author" handler={require('./components/authors/manageAuthorPage')}/>
         <Route name="about" handler={require('./components/about/aboutPage')}/>
         <NotFoundRoute handler={require('./components/notFoundPage')}/>
-        <Redirect from="about-us" to="about"/> <!--Redirect old pages-->
-        <Redirect from="awthers" to="authors"/> <!--Redirect Typos-->
-        <Redirect from="about/*" to="about"/> <!--Redirect old directories-->
+        <Redirect from="about-us" to="about"/>
+        <Redirect from="awthers" to="authors"/>
+        <Redirect from="about/*" to="about"/>
     </Route>
 );
 

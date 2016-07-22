@@ -25,8 +25,7 @@ var AuthorPage = React.createClass({
     },
 
     render: function() {
-        return(
-            // div is the wrapper (top-level-component)
+        return (
             <div>
                 <h1>Authors</h1>
                 <Link className="btn btn-default" to="addAuthor">Add Author</Link>

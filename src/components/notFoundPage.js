@@ -14,7 +14,7 @@ var NotFoundPage = React.createClass({
           <p>Whoops! Sorry, there is nothing to see here.</p>
           <p><Link to="app" className="btn btn-info btn-sm">Back to Home</Link></p>
       </div>
-    )
+    );
   }
 });
 
