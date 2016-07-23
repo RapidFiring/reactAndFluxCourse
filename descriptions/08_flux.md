@@ -48,7 +48,7 @@ pattern for unidirectional data flow
     2. addChangeListener and removeChangeListener
     3. emitChange
     
-    ![DPS](https://github.com/rapidfiring/reactAndFluxCourse/descriptions/img/dispatcher_payload_stores.png) 
+    ![DPS](https://github.com/rapidfiring/reactAndFluxCourse/blob/feature/flux/descriptions/img/dispatcher_payload_stores.png) 
 
 ## view ##
 also called _**controller views**_
